@@ -198,7 +198,7 @@ int main() {
     clock_t start_time = clock();
 
      // MT Schedule Search
-    #pragma omp parallel for private(i)
+    #pragma omp parallel num_threads(4)
     for (i = 0; i < MAX_SEARCH; i++) {
         char schedule[num_machines][max_time][20];
         initialize_machines(schedule);
