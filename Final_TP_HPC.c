@@ -8,7 +8,7 @@
 // Global variables
 int num_jobs, num_tasks, num_machines;
 int max_time = 0;
-#define MAX_SEARCH 500000
+#define MAX_SEARCH 1000000
 #define FILE_NAME "jobshop6.txt"
 #define NUM_THREADS 4
 
@@ -141,6 +141,9 @@ void print_machines(char machines[num_machines][max_time][20], int best_time) {
 }
 
 int main() {
+
+    omp_set_dynamic(0);
+    omp_set_num_threads(NUM_THREADS);
 
     FILE *fp;
     int i, j;
