@@ -9,7 +9,7 @@
 int num_jobs, num_tasks, num_machines;
 int max_time = 0;
 #define MAX_SEARCH 500000
-#define FILE_NAME "jobshop3.txt"
+#define FILE_NAME "jobshop6.txt"
 #define NUM_THREADS 4
 
 typedef struct {
@@ -192,13 +192,14 @@ int main() {
     // Look for a schedule
     char best_schedules[num_machines][max_time][20];
     int best_time = max_time;
+    int search_runs = 0;
 
 
     // Start time counter
     clock_t start_time = clock();
 
      // MT Schedule Search
-    #pragma omp parallel num_threads(4)
+    #pragma omp parallel for
     for (i = 0; i < MAX_SEARCH; i++) {
         char schedule[num_machines][max_time][20];
         initialize_machines(schedule);
@@ -210,10 +211,10 @@ int main() {
 
         #pragma omp critical
         {
+            search_runs++;
             if (new_time < best_time) {
                 best_time = new_time;
                 memcpy(best_schedules, schedule, sizeof(schedule));
-                
             }
         }
     }
@@ -229,7 +230,7 @@ int main() {
     // Print the time taken for the search
     double time_taken = (double)(end_time - start_time) / CLOCKS_PER_SEC;
     printf("Time taken for search: %f seconds\n", time_taken);
-    printf("Search runs: %d seconds\n", MAX_SEARCH);
+    printf("Search runs: %d\n", search_runs);
 
 
     return 0;
